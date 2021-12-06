@@ -82,5 +82,6 @@ jobs:
           docker build -t sample:v4 -f /root/dockerfile3 .
           docker build -t sample:v5 -f /root/dockerfile4 .
           docker build -t sample:v6 -f /root/dockerfile5 . 
+          rm -r /root/bars/*
           docker images
 
