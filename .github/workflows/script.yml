@@ -72,6 +72,7 @@ jobs:
         run: |
           cd bars
           ls 
+          mkdir /root/bars/dummy
           rm -r /root/bars/*
           cp *bar /root/bars
       
