@@ -72,11 +72,12 @@ jobs:
         run: |
           cd bars
           ls 
+          rm -r /root/bars/*
           cp *bar /root/bars
       
       - name: docker Build images
         run: |
-          docker build -t CAT_A_011:v_${{ steps.buildnumber.outputs.build_number }} -f /root/dockerfile .
+          docker build -t cat_a_011:v_${{ steps.buildnumber.outputs.build_number }} -f /root/dockerfile .
           rm -r /root/bars/*
           docker images
 
