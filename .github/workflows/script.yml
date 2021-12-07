@@ -25,15 +25,16 @@ jobs:
       - name: Create Bars Folder
         run: mkdir bars
           
-      - name: Authenticate and set context
+      - name: Authenticate OpenShift And Set Context
         uses: redhat-actions/oc-login@v1
         env:
           OPENSHIFT_USER: ${{ secrets.OPENSHIFT_USER }}
           OPENSHIFT_PASSWORD: ${{ secrets.OPENSHIFT_PASSWORD }}
           OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
           OPENSHIFT_NAMESPACE: ${{ secrets.OPENSHIFT_NAMESPACE }}
+          OPENSHIFT_SERVER_RUL: ${{ secrets.OPENSHIFT_SERVER_RUL }}
         with:
-          openshift_server_url: https://api.ocp4.eidikointernal.com:6443
+          openshift_server_url:  ${{ secrets.OPENSHIFT_SERVER_RUL }}
           #openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
           openshift_username: ${{ env.OPENSHIFT_USER }}
           openshift_password: ${{ env.OPENSHIFT_PASSWORD }}
