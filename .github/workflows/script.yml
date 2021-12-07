@@ -24,7 +24,7 @@ jobs:
         
       - name: Create Bars Folder
         run: mkdir bars
-		
+          
       - name: Authenticate and set context
         uses: redhat-actions/oc-login@v1
         env:
