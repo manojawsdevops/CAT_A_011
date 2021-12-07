@@ -28,10 +28,10 @@ jobs:
       - name: Authenticate and set context
         uses: redhat-actions/oc-login@v1
         env:
-          OPENSHIFT_USER: kubeadmin
-          OPENSHIFT_PASSWORD: CxBY8-8DWET-3mY8q-MmYE8
-          OPENSHIFT_TOKEN: sha256~rbcLarWMgyKznQir5sa7YSsMox-zGzsAp1rs8Bz-R3g
-          OPENSHIFT_NAMESPACE: manoj
+          OPENSHIFT_USER: ${{ secrets.OPENSHIFT_USER }}
+          OPENSHIFT_PASSWORD: ${{ secrets.OPENSHIFT_PASSWORD }}
+          OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+          OPENSHIFT_NAMESPACE: ${{ secrets.OPENSHIFT_NAMESPACE }}
         with:
           openshift_server_url: https://api.ocp4.eidikointernal.com:6443
           #openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
