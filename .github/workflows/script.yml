@@ -8,13 +8,13 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  PROJECTS: RBS_LoanAccountDetails_v2 RBS_LoanAccountDetails_v2 RBS_FetchBeneficiaryBanksList_v1 RBS_EnquireBeneficiaryDetails_v1 RBS_FXRateInquiry_v3 RBS_AccountBalanceDetails_v1
+  PROJECTS: RBS_LoanAccountDetails_v2 RBS_FetchFXDealList_v1 RBS_FetchBeneficiaryBanksList_v1 RBS_EnquireBeneficiaryDetails_v1 RBS_FXRateInquiry_v3 RBS_AccountBalanceDetails_v1
 jobs:
   build:
     runs-on: self-hosted
     steps:
       
-      - name: Generate build number
+      - name: Generate Build Number
         id: buildnumber
         uses: einaregilsson/build-number@v3
         with:
@@ -22,14 +22,14 @@ jobs:
       - uses: actions/checkout@v2
 
         
-      - name: Create bars Folder
+      - name: Create Bars Folder
         run: mkdir bars
         
-      - name: Build All Projects
-        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/RBS_LoanAccountDetails_v2_${{ steps.buildnumber.outputs.build_number }}.bar; cd ../;done
+      - name: Build All Projects One By One
+        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/${{f}}_${{ steps.buildnumber.outputs.build_number }}.bar; cd ../;done
           
       # Runs a set of commands using the runners shell
-      - name: Check bars folder
+      - name: Check Bars Folder Existance
         run: |
           cd bars
           ls 
@@ -37,7 +37,7 @@ jobs:
           rm -r /root/bars/*
           cp *.bar /root/bars
       
-      - name: docker Build images
+      - name: Docker Build Image for repo ${{ github.repository }} of build # ${{ steps.buildnumber.outputs.build_number }}
         run: |
           docker build -t cat_a_011:v_${{ steps.buildnumber.outputs.build_number }} -f /root/dockerfile .
           rm -r /root/bars/*
