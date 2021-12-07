@@ -43,7 +43,7 @@ jobs:
            
       - name: Build All Projects One By One
         run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ; cd ../;done
-       
+     
       - name: Docker Build Image for repo ${{ github.repository }} of build number ${{ steps.buildnumber.outputs.build_number }}
         run: |
           docker build -t cat_a_011:v_${{ steps.buildnumber.outputs.build_number }} -f /root/dockerfile .
