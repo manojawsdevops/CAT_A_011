@@ -26,7 +26,7 @@ jobs:
         run: mkdir bars
         
       - name: Build All Projects
-        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/RBS_LoanAccountDetails_v2_${{ steps.buildnumber.outputs.build_number }}.bar; done
+        run: for f in $PROJECTS; do echo building $f; cd ../$f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/RBS_LoanAccountDetails_v2_${{ steps.buildnumber.outputs.build_number }}.bar; done
           
       # Runs a set of commands using the runners shell
       - name: Check bars folder
