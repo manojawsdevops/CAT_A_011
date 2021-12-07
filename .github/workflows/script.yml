@@ -13,7 +13,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  FILES: RBS_LoanAccountDetails_v2 RBS_FetchFXDealList_v1 RBS_FetchBeneficiaryBanksList_v1 RBS_EnquireBeneficiaryDetails_v1 RBS_FXRateInquiry_v3 RBS_AccountBalanceDetails_v1
+  FILES: RBS_LoanAccountDetails_v2
 jobs:
   build:
     runs-on: self-hosted
