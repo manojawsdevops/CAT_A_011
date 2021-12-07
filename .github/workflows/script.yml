@@ -42,7 +42,7 @@ jobs:
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
            
       - name: Build All Projects One By One
-        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/$f_${{ steps.buildnumber.outputs.build_number }}.bar; cd ../;done
+        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/bars/*.bar /root/bars/$f_${{ steps.buildnumber.outputs.build_number }}.bar; cd ../;done
           
       # Runs a set of commands using the runners shell
       - name: Check Bars Folder Existance
