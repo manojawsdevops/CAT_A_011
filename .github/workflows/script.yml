@@ -1,29 +1,17 @@
 name: CAT_A_01
-
-
 on:
-  
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
-  
   workflow_dispatch:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  FILES: RBS_LoanAccountDetails_v2
-
-
+  PROJECTS: RBS_LoanAccountDetails_v2
 jobs:
-  
   build:
-    
     runs-on: self-hosted
-
-
-    
     steps:
       
       - name: Generate build number
@@ -37,8 +25,8 @@ jobs:
       - name: Create bars Folder
         run: mkdir bars
         
-      - name: Run All Projects Loop
-        run: for f in $FILES; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/$f_${{ steps.buildnumber.outputs.build_number }}.bar; done
+      - name: Build All Projects
+        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/$f_${{ steps.buildnumber.outputs.build_number }}.bar; done
           
       # Runs a set of commands using the runners shell
       - name: Check bars folder
