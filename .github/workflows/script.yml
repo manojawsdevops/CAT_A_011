@@ -26,7 +26,7 @@ jobs:
         run: mkdir bars
         
       - name: Build All Projects One By One
-        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/${{f}}_${{ steps.buildnumber.outputs.build_number }}.bar; cd ../;done
+        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/$f_${{ steps.buildnumber.outputs.build_number }}.bar; cd ../;done
           
       # Runs a set of commands using the runners shell
       - name: Check Bars Folder Existance
@@ -37,7 +37,7 @@ jobs:
           rm -r /root/bars/*
           cp *.bar /root/bars
       
-      - name: Docker Build Image for repo ${{ github.repository }} of build # ${{ steps.buildnumber.outputs.build_number }}
+      - name: Docker Build Image for repo ${{ github.repository }} of build number ${{ steps.buildnumber.outputs.build_number }}
         run: |
           docker build -t cat_a_011:v_${{ steps.buildnumber.outputs.build_number }} -f /root/dockerfile .
           rm -r /root/bars/*
