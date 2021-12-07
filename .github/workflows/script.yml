@@ -24,9 +24,25 @@ jobs:
         
       - name: Create Bars Folder
         run: mkdir bars
-        
+		
+      - name: Authenticate and set context
+        uses: redhat-actions/oc-login@v1
+        env:
+          OPENSHIFT_USER: kubeadmin
+          OPENSHIFT_PASSWORD: CxBY8-8DWET-3mY8q-MmYE8
+          OPENSHIFT_TOKEN: sha256~rbcLarWMgyKznQir5sa7YSsMox-zGzsAp1rs8Bz-R3g
+          OPENSHIFT_NAMESPACE: manoj
+        with:
+          openshift_server_url: https://console-openshift-console.apps.ocp4.eidikointernal.com/
+          #openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          openshift_username: ${{ env.OPENSHIFT_USER }}
+          openshift_password: ${{ env.OPENSHIFT_PASSWORD }}
+          insecure_skip_tls_verify: true
+          #certificate_authority_data: ${{ secrets.CA_DATA }}
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+           
       - name: Build All Projects One By One
-        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/RBS_LoanAccountDetails_v2_${{ steps.buildnumber.outputs.build_number }}.bar; cd ../;done
+        run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ;mv /root/*.bar ../bars/$f_${{ steps.buildnumber.outputs.build_number }}.bar; cd ../;done
           
       # Runs a set of commands using the runners shell
       - name: Check Bars Folder Existance
