@@ -41,6 +41,9 @@ jobs:
           insecure_skip_tls_verify: true
           #certificate_authority_data: ${{ secrets.CA_DATA }}
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+          
+      - name: Check API Resources
+        run: oc api-resources
            
       - name: Build All Projects One By One
         run: for f in $PROJECTS; do echo building $f; cd $f ;ant -noinput -buildfile build.xml ; cd ../;done
