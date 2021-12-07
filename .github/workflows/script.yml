@@ -35,7 +35,7 @@ jobs:
           ls 
           mkdir /root/bars/dummy
           rm -r /root/bars/*
-          cp *bar /root/bars
+          cp *.bar /root/bars
       
       - name: docker Build images
         run: |
