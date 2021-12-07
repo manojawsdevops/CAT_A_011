@@ -9,6 +9,16 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   PROJECTS: RBS_LoanAccountDetails_v2 RBS_FetchFXDealList_v1 RBS_FetchBeneficiaryBanksList_v1 RBS_EnquireBeneficiaryDetails_v1 RBS_FXRateInquiry_v3 RBS_AccountBalanceDetails_v1
+  OPENSHIFT_USER: ${{ secrets.OPENSHIFT_USER }}
+  OPENSHIFT_PASSWORD: ${{ secrets.OPENSHIFT_PASSWORD }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  OPENSHIFT_NAMESPACE: ${{ secrets.OPENSHIFT_NAMESPACE }}
+  OPENSHIFT_SERVER_RUL: ${{ secrets.OPENSHIFT_SERVER_RUL }}
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_REGISTRY_USER: ${{ github.actor }}
+  IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
+  APP_NAME: ""
+  APP_PORT: ""
 jobs:
   build:
     runs-on: self-hosted
@@ -33,6 +43,9 @@ jobs:
           OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
           OPENSHIFT_NAMESPACE: ${{ secrets.OPENSHIFT_NAMESPACE }}
           OPENSHIFT_SERVER_RUL: ${{ secrets.OPENSHIFT_SERVER_RUL }}
+          IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+          IMAGE_REGISTRY_USER: ${{ github.actor }}
+          IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
         with:
           openshift_server_url:  ${{ secrets.OPENSHIFT_SERVER_RUL }}
           #openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
@@ -53,3 +66,22 @@ jobs:
           docker build -t cat_a_011:v_${{ steps.buildnumber.outputs.build_number }} -f /root/dockerfile .
           rm -r /root/bars/*
           docker images
+      
+      - name: Determine App Name
+        if: env.APP_NAME == ''
+        run: |
+         echo "APP_NAME=$(basename $PWD)" | tee -a $GITHUB_ENV
+ 
+      - name: Determine Image Tags
+        if: env.IMAGE_TAGS == ''
+        run: |
+         echo "IMAGE_TAGS=latest ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
+                    
+      - name: Build From Dockerfile
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+         image: ${{ env.APP_NAME }}
+         tags: ${{ env.IMAGE_TAGS }}
+         dockerfiles: |
+           /root/dockerfile
