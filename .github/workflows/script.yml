@@ -20,7 +20,7 @@ env:
   APP_NAME: ""
   APP_PORT: ""
 jobs:
-  build:
+  CI:
     runs-on: self-hosted
     steps:
       
